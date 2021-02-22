@@ -1,14 +1,22 @@
 package com.cursosrecomendados.telegram.telegramCursos;
 
+
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import io.restassured.RestAssured;
+import io.restassured.response.ResponseBodyExtractionOptions;
+import io.restassured.response.ResponseOptions;
+import net.bytebuddy.agent.VirtualMachine.ForHotSpot.Connection.Response;
+
+import static org.junit.Assert.assertEquals;
 
 import java.util.Random;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+
 public class SpringBootBootstrapLiveTest {
 
 	private static final String API_ROOT = "http://localhost:8081/api/books";
@@ -19,9 +27,10 @@ public class SpringBootBootstrapLiveTest {
 		book.setAuthor(randomAlphabetic(15));
 		return book;
 	}
+
 	/*
-	 * He creat el metode random peque no me'l detectava 
-	 * */
+	 * He creat el metode random peque no me'l detectava
+	 */
 	private String randomAlphabetic(int name) {
 		char n;
 		Random rnd = new Random();
@@ -33,47 +42,72 @@ public class SpringBootBootstrapLiveTest {
 		return cadena;
 	}
 
-	/*
-	 * Em dona error en el response i el mediaType no me'l importa be
-	  	private String createBookAsUri(Book book) {
-		Response response = RestAssured.given().contentType(MediaType.APPLICATION_JSON_VALUE).body(book).post(API_ROOT);
-		return API_ROOT + "/" + response.jsonPath().get("id");
+	private String createBookAsUri(Book book) {
+		Response response = (Response) RestAssured.given().contentType(MediaType.APPLICATION_JSON_VALUE).body(book)
+				.post(API_ROOT);
+		return API_ROOT + "/" + ((ResponseBodyExtractionOptions) response).jsonPath().get("id");
+	}
+
+	@Test
+	public void whenGetAllBooks_thenOK() {
+		Response response = (Response) RestAssured.get(API_ROOT);
+
+		assertEquals(HttpStatus.OK.value(),
+				((ResponseOptions<io.restassured.response.Response>) response).getStatusCode());
 	}
 	
 	@Test
-	public void whenGetAllBooks_thenOK() {
-	    Response response = RestAssured.get(API_ROOT);
-	 
-	    assertEquals(HttpStatus.OK.value(), response.getStatusCode());
-	}
-
-	@Test
-	public void whenGetBooksByTitle_thenOK() {
+	public void whenCreateNewBook_thenCreated() {
 	    Book book = createRandomBook();
-	    createBookAsUri(book);
-	    Response response = RestAssured.get(
-	      API_ROOT + "/title/" + book.getTitle());
+	    Response response = (Response) RestAssured.given()
+	      .contentType(MediaType.APPLICATION_JSON_VALUE)
+	      .body(book)
+	      .post(API_ROOT);
 	    
-	    assertEquals(HttpStatus.OK.value(), response.getStatusCode());
-	    assertTrue(response.as(List.class)
-	      .size() > 0);
+	    assertEquals(HttpStatus.CREATED.value(), ((ResponseOptions<io.restassured.response.Response>) response).getStatusCode());
 	}
+	
 	@Test
-	public void whenGetCreatedBookById_thenOK() {
+	public void whenInvalidBook_thenError() {
+	    Book book = createRandomBook();
+	    book.setAuthor(null);
+	    Response response = (Response) RestAssured.given()
+	      .contentType(MediaType.APPLICATION_JSON_VALUE)
+	      .body(book)
+	      .post(API_ROOT);
+	    
+	    assertEquals(HttpStatus.BAD_REQUEST.value(), ((ResponseOptions<io.restassured.response.Response>) response).getStatusCode());
+	}
+	
+	@Test
+	public void whenUpdateCreatedBook_thenUpdated() {
 	    Book book = createRandomBook();
 	    String location = createBookAsUri(book);
-	    Response response = RestAssured.get(location);
+	    book.setId(Long.parseLong(location.split("api/books/")[1]));
+	    book.setAuthor("newAuthor");
+	    Response response = (Response) RestAssured.given()
+	      .contentType(MediaType.APPLICATION_JSON_VALUE)
+	      .body(book)
+	      .put(location);
 	    
-	    assertEquals(HttpStatus.OK.value(), response.getStatusCode());
-	    assertEquals(book.getTitle(), response.jsonPath()
-	      .get("title"));
-	}
+	    assertEquals(HttpStatus.OK.value(), ((ResponseOptions<io.restassured.response.Response>) response).getStatusCode());
 
-	@Test
-	public void whenGetNotExistBookById_thenNotFound() {
-	    Response response = RestAssured.get(API_ROOT + "/" + randomNumeric(4));
+	    response = (Response) RestAssured.get(location);
 	    
-	    assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatusCode());
+	    assertEquals(HttpStatus.OK.value(), ((ResponseOptions<io.restassured.response.Response>) response).getStatusCode());
+	    assertEquals("newAuthor", ((ResponseBodyExtractionOptions) response).jsonPath()
+	      .get("author"));
 	}
-	*/
+	
+	@Test
+	public void whenDeleteCreatedBook_thenOk() {
+	    Book book = createRandomBook();
+	    String location = createBookAsUri(book);
+	    Response response = (Response) RestAssured.delete(location);
+	    
+	    assertEquals(HttpStatus.OK.value(), ((ResponseOptions<io.restassured.response.Response>) response).getStatusCode());
+
+	    response = (Response) RestAssured.get(location);
+	    assertEquals(HttpStatus.NOT_FOUND.value(), ((ResponseOptions<io.restassured.response.Response>) response).getStatusCode());
+	}
 }
