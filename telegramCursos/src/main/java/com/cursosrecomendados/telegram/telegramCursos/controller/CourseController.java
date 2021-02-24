@@ -42,7 +42,7 @@ public class CourseController {
 	@ResponseBody
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-	public Course create(@RequestBody Course course) {
+	public Course create(Course course) {
 		return courserepository.save(course);
 	}
 	
