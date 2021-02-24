@@ -26,6 +26,11 @@
   </parent>
   
   <dependencies>
+	<dependency>
+	   	<groupId>org.telegram</groupId>
+	    <artifactId>telegrambots</artifactId>
+		<version>3.5</version>
+	</dependency>
 	  <!-- https://mvnrepository.com/artifact/io.rest-assured/rest-assured -->
 	<dependency>
 	    <groupId>io.rest-assured</groupId>

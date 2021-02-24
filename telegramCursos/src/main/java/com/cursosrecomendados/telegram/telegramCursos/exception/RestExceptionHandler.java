@@ -1,4 +1,4 @@
-package com.cursosrecomendados.telegram.telegramCursos;
+package com.cursosrecomendados.telegram.telegramCursos.exception;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;

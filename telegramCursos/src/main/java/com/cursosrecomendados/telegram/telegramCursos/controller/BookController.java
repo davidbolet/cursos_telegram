@@ -1,4 +1,4 @@
-package com.cursosrecomendados.telegram.telegramCursos;
+package com.cursosrecomendados.telegram.telegramCursos.controller;
 
 import java.util.List;
 
@@ -13,6 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.cursosrecomendados.telegram.telegramCursos.exception.BookIdMismatchException;
+import com.cursosrecomendados.telegram.telegramCursos.exception.BookNotFoundException;
+import com.cursosrecomendados.telegram.telegramCursos.model.Book;
+import com.cursosrecomendados.telegram.telegramCursos.repository.BookRepository;
+
 import org.springframework.http.HttpStatus;
 
 @RestController

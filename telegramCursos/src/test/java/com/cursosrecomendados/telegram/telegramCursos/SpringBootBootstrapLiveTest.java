@@ -1,11 +1,16 @@
 package com.cursosrecomendados.telegram.telegramCursos;
 
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import com.cursosrecomendados.telegram.telegramCursos.model.Book;
 
 import io.restassured.RestAssured;
 import io.restassured.response.ResponseBodyExtractionOptions;
@@ -16,7 +21,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Random;
 
-
+@RunWith(SpringRunner.class)
+@SpringBootTest(properties = "spring.main.allow-bean-definition-overriding=true",classes= Application.class)
 public class SpringBootBootstrapLiveTest {
 
 	private static final String API_ROOT = "http://localhost:8081/api/books";

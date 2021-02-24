@@ -1,4 +1,4 @@
-package com.cursosrecomendados.telegram.telegramCursos;
+package com.cursosrecomendados.telegram.telegramCursos.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;

@@ -1,4 +1,4 @@
-package com.cursosrecomendados.telegram.telegramCursos;
+package com.cursosrecomendados.telegram.telegramCursos.exception;
 
 public class BookNotFoundException extends RuntimeException{
 
