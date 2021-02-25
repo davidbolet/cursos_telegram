@@ -1,5 +1,7 @@
 package com.cursosrecomendados.telegram.telegramCursos.exception;
 
+import java.io.IOException;
+
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
@@ -18,6 +20,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
       Exception ex, WebRequest request) {
         return handleExceptionInternal(ex, "Book not found", 
           new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+    
+    @ExceptionHandler({ IOException.class, InterruptedException.class })
+    protected ResponseEntity<Object> handleSendErrors(
+      Exception ex, WebRequest request) {
+        return handleExceptionInternal(ex, "Course could not be sent", 
+          new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 
     @ExceptionHandler({ BookIdMismatchException.class, 

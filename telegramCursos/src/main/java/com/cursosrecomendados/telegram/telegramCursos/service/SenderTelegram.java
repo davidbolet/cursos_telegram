@@ -15,7 +15,8 @@ import com.cursosrecomendados.telegram.telegramCursos.model.Course;
 //token = 1619304273:AAEhHGCSAjhdA6xEw6-EI8nRtYKHd1IJyc4
 @Service
 public class SenderTelegram {
-	private static final String CHAT_ID = "1337682137";
+	//private static final String CHAT_ID = "1337682137";
+	private static final String CHAT_ID = "-1001365910728";
     private static final String TOKEN = "1619304273:AAEhHGCSAjhdA6xEw6-EI8nRtYKHd1IJyc4";
     
     public void sendMessage(Course course) throws IOException, InterruptedException {
