@@ -20,7 +20,8 @@ public class SenderTelegram {
     private static final String TOKEN = "1619304273:AAEhHGCSAjhdA6xEw6-EI8nRtYKHd1IJyc4";
     
     public void sendMessage(Course course) throws IOException, InterruptedException {
-    	String message = "Title: "+ course.getTitle() + " \n Description: " + course.getDescription() + "\n Date: " + course.getDate().toString();
+    	String message = "Title: "+ course.getTitle() + " \n Description: " + course.getDescription() 
+    	+"\n Link"+course.getLink() +"\n Date: "+course.getDate().toString()+"\n Image:"+course.getImage();
     	 HttpClient client = HttpClient.newBuilder()
                  .connectTimeout(Duration.ofSeconds(5))
                  .version(HttpClient.Version.HTTP_2)
@@ -41,6 +42,5 @@ public class SenderTelegram {
          HttpResponse<String> response = client
            .send(request, HttpResponse.BodyHandlers.ofString());
          
-         System.out.println(response.body());
     }
 }

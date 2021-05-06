@@ -1,5 +1,5 @@
 package com.cursosrecomendados.telegram.telegramCursos;
-
+/*
 
 
 import org.junit.jupiter.api.Test;
@@ -36,7 +36,7 @@ public class SpringBootBootstrapLiveTest {
 
 	/*
 	 * He creat el metode random peque no me'l detectava
-	 */
+	 *//*
 	private String randomAlphabetic(int name) {
 		char n;
 		Random rnd = new Random();
@@ -117,3 +117,4 @@ public class SpringBootBootstrapLiveTest {
 	    assertEquals(HttpStatus.NOT_FOUND.value(), ((ResponseOptions<io.restassured.response.Response>) response).getStatusCode());
 	}
 }
+*/
